@@ -3,7 +3,7 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int default_border = 0;   /* to switch back to default border after dynamic border resizing via keybinds */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 8;       /* horiz inner gap between windows */
@@ -12,7 +12,7 @@ static const unsigned int gappoh    = 8;       /* horiz outer gap between window
 static const unsigned int gappov    = 8;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const unsigned int systrayspacing = 8;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails,display systray on the 1st monitor,False: display systray on last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -20,7 +20,7 @@ static const int showtab            = showtab_auto;
 static const int toptab             = 1;        /* 0 means bottom tab */
 static const int floatbar           = 1;        /* 1 means the bar will float(don't have padding),0 means the bar have padding */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int horizpadbar        = 5;
+static const int horizpadbar        = 12;
 static const int vertpadbar         = 12;
 static const int vertpadtab         = 32;
 static const int horizpadtabi       = 16;
@@ -45,39 +45,46 @@ static const int new_window_attach_on_end = 1; /*  1 means the new window will a
 static const char *fonts[]          = {"Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=19" };
 
 // theme
-#include "themes/onedark.h"
+#include "./themes/catppuccin.h"
 
 static const char *colors[][3]      = {
     /*                     fg       bg      border */
     [SchemeNorm]       = { gray3,   black,  gray2 },
     [SchemeSel]        = { gray4,   blue,   blue  },
     [SchemeTitle]      = { white,   black,  black }, // active window title
-    [TabSel]           = { blue,    gray2,  black },
+    [TabSel]           = { blue,    blue,   black },
     [TabNorm]          = { gray3,   black,  black },
     [SchemeTag]        = { gray3,   black,  black },
     [SchemeTag1]       = { blue,    black,  black },
-    [SchemeTag2]       = { red,     black,  black },
-    [SchemeTag3]       = { orange,  black,  black },
-    [SchemeTag4]       = { green,   black,  black },
-    [SchemeTag5]       = { pink,    black,  black },
-    [SchemeLayout]     = { green,   black,  black },
+    [SchemeTag2]       = { orange,  black,  black },
+    [SchemeTag3]       = { red,    black,  black },
+    [SchemeTag4]       = { green,     black,  black },
+    [SchemeTag5]       = { purple,   black,  black },
+    [SchemeLayout]     = { blue,   black,  black },
     [SchemeBtnPrev]    = { green,   black,  black },
     [SchemeBtnNext]    = { yellow,  black,  black },
     [SchemeBtnClose]   = { red,     black,  black },
 };
 
 /* tagging */
-static char *tags[] = { "", "", "", "", "󰇘" };
+static char *tags[] = { "", "", "", "", "󰅟", "󱨇", "", "󰇘" };
 
 static const char* eww[] = { "eww", "open" , "eww", NULL };
 
 static const Launcher launchers[] = {
     /* command     name to display */
-    { eww,         "" },
+    { eww,         "󰕰" },
 };
 
 static const int tagschemes[] = {
-    SchemeTag1, SchemeTag2, SchemeTag3, SchemeTag4, SchemeTag5
+    SchemeTag1,
+    SchemeTag2,
+    SchemeTag3,
+    SchemeTag4,
+    SchemeTag5,
+    SchemeTag2,
+    SchemeTag3,
+    SchemeTag4
 };
 
 static const unsigned int ulinepad      = 5; /* horizontal padding between the underline and tag */
@@ -102,8 +109,8 @@ static const int resizehints = 0;    /* 1 means respect size hints in tiled resi
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 #define FORCE_VSPLIT 0  /* nrowgrid layout: force two clients to always split vertically */
-#include "functions.h"
 
+#include "functions.h"
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
@@ -189,7 +196,7 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,                 XK_period,  tagmon,         {.i = +1 } },
 
     // kill dwm
-    { MODKEY|ShiftMask,                 XK_q,       spawn,          SHCMD("killall chadwm") },
+    { MODKEY|ShiftMask,                 XK_q,       spawn,          SHCMD("killall chadwm xinit") },
 
     // kill window
     { MODKEY|ShiftMask,                 XK_c,       killclient,     {0} },
@@ -219,7 +226,7 @@ static const Button buttons[] = {
     { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
     { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
     { ClkWinTitle,          0,              Button2,        zoom,           {0} },
-    { ClkStatusText,        0,              Button2,        spawn,          SHCMD("alacritty") },
+    { ClkStatusText,        0,              Button2,        spawn,          { .v = termcmd } },
 
     /* Keep movemouse? */
     /* { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} }, */
