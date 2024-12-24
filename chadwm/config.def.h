@@ -108,8 +108,10 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
     /* symbol     arrange function */
     { "[T]",      tile },    /* first entry is default */
-    { "[M]",      monocle },
     { "[@]",      spiral },
+    { "[F]",      NULL },    /* no layout function means floating behavior */
+    { "[M]",      monocle },
+    { ":::",      gaplessgrid },
     { "[\\]",     dwindle },
     { "H[]",      deck },
     { "TTT",      bstack },
@@ -117,10 +119,8 @@ static const Layout layouts[] = {
     { "HHH",      grid },
     { "###",      nrowgrid },
     { "---",      horizgrid },
-    { ":::",      gaplessgrid },
     { "|M|",      centeredmaster },
     { ">M>",      centeredfloatingmaster },
-    { "[F]",      NULL },    /* no layout function means floating behavior */
     { NULL,       NULL },
 };
 
@@ -141,21 +141,21 @@ static const Key keys[] = {
     /* modifier                         key         function        argument */
 
     // brightness and audio
-    {0,             XF86XK_AudioRaiseVolume,        spawn,  { .v = audioupcmd } },
-    {0,             XF86XK_AudioLowerVolume,        spawn,  { .v = audiodowncmd } },
-    {0,             XF86XK_AudioMute,               spawn,  { .v = audiomutecmd } },
-    {0,             XF86XK_AudioMicMute,            spawn,  { .v = micmutecmd } },
-    {0,				XF86XK_MonBrightnessUp,         spawn,	{ .v = monbrigupcmd } },
-    {0,				XF86XK_MonBrightnessDown,       spawn,	{ .v = monbrigdowncmd } },
+    {0,             XF86XK_AudioRaiseVolume,        spawn,          { .v = audioupcmd } },
+    {0,             XF86XK_AudioLowerVolume,        spawn,          { .v = audiodowncmd } },
+    {0,             XF86XK_AudioMute,               spawn,          { .v = audiomutecmd } },
+    {0,             XF86XK_AudioMicMute,            spawn,          { .v = micmutecmd } },
+    {0,				XF86XK_MonBrightnessUp,         spawn,	        { .v = monbrigupcmd } },
+    {0,				XF86XK_MonBrightnessDown,       spawn,	        { .v = monbrigdowncmd } },
 
     // screenshot
-    {0,				XK_Print,                       spawn,	{ .v = screenshotcmd } },
+    {0,				XK_Print,                       spawn,	        { .v = screenshotcmd } },
 
     // emojipicker
-    {MODKEY|ShiftMask,				    XK_i,       spawn,	{ .v = emojipickercmd } },
+    {MODKEY|ShiftMask,				    XK_i,       spawn,	        { .v = emojipickercmd } },
 
-    { MODKEY,                           XK_p,       spawn,  { .v = applaunchercmd } },
-    { MODKEY|ShiftMask,                 XK_Return,  spawn,  { .v = termcmd } },
+    { MODKEY,                           XK_p,       spawn,          { .v = applaunchercmd } },
+    { MODKEY|ShiftMask,                 XK_Return,  spawn,          { .v = termcmd } },
 
     // toggle stuff
     { MODKEY,                           XK_b,       togglebar,      {0} },
@@ -211,11 +211,11 @@ static const Key keys[] = {
     { MODKEY|ControlMask|ShiftMask,     XK_d,       defaultgaps,    {0} },
 
     // layout
-    { MODKEY,                           XK_t,       setlayout,      {.v = &layouts[0]} },
-    { MODKEY|ShiftMask,                 XK_f,       setlayout,      {.v = &layouts[1]} },
-    { MODKEY,                           XK_m,       setlayout,      {.v = &layouts[2]} },
-    { MODKEY|ControlMask,               XK_g,       setlayout,      {.v = &layouts[10]} },
-    { MODKEY|ControlMask|ShiftMask,     XK_t,       setlayout,      {.v = &layouts[13]} },
+    { MODKEY,                           XK_t,       setlayout,      {.v = &layouts[0]} },  // Tile
+    { MODKEY,                           XK_m,       setlayout,      {.v = &layouts[1]} },  // Spiral
+    { MODKEY|ShiftMask,                 XK_t,       setlayout,      {.v = &layouts[2]} },  // Floating
+    { MODKEY|ShiftMask,                 XK_m,       setlayout,      {.v = &layouts[3]} },  // Monocle
+    { MODKEY|ShiftMask,                 XK_g,       setlayout,      {.v = &layouts[4]} },  // Grid
     { MODKEY,                           XK_space,   setlayout,      {0} },
     { MODKEY|ControlMask,               XK_comma,   cyclelayout,    {.i = -1 } },
     { MODKEY|ControlMask,               XK_period,  cyclelayout,    {.i = +1 } },
@@ -232,7 +232,7 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,                 XK_w,       setborderpx,    {.i = default_border } },
 
     // kill dwm
-    { MODKEY|ShiftMask,                 XK_q,       spawn,        SHCMD("killall bar.sh chadwm") },
+    { MODKEY|ShiftMask,                 XK_q,       spawn,          SHCMD("killall bar.sh chadwm") },
 
     // kill window
     { MODKEY|ShiftMask,                 XK_c,       killclient,     {0} },
