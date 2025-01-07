@@ -100,6 +100,7 @@ static const Rule rules[] = {
     /* class      instance    title       tags mask     iscentered   isfloating   monitor */
     { "Brave",    NULL,       NULL,       1 << 2,       0,           0,           -1 },
     { "eww",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "copyq",    NULL,       NULL,       ~0,           1,           1,           -1 },
 };
 
 /* layout(s) */
